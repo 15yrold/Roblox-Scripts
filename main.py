@@ -46,7 +46,7 @@ async def blacklist(ctx, username: str):
         log('blacklisted: ' + username)
     repo.update_file('blacklist.txt', 'blacklisted: ' + username, f'{datas}', contents.sha)
     await ctx.send('Blacklisted: ' + username)
-@slash.slash(name = 'blacklist', description = 'Blacklists user', guild_ids = [965416632321192007])
+@slash.slash(name = 'blacklist', description = 'Blacklists user', guild_ids = [])
 @commands.has_role('handlers') 
 async def blacklist(ctx, username: str):
     contents = repo.get_contents('blacklist.txt')
@@ -77,7 +77,7 @@ async def whitelist(ctx, username: str):
         log('whitelisted: ' + username)
     repo.update_file('whitelist.txt', 'whitelisted: ' + username, f'{datas}', contents.sha)
     await ctx.send('Whitelist: ' + username)
-@slash.slash(name = 'whitelist', description = 'whitelists user', guild_ids = [965416632321192007])
+@slash.slash(name = 'whitelist', description = 'whitelists user', guild_ids = [])
 @commands.has_role('handlers') 
 async def whitelist(ctx, username: str):
     contents = repo.get_contents('whitelist.txt')
