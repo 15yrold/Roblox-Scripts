@@ -22,41 +22,41 @@ intents.members = True
 intents = discord.Intents(messages = True, guilds = True, members = True)
 client = commands.Bot(self_bot = False, command_prefix = '>', case_insensitive = True, guild_subscriptions = True,  intents = intents)
 slash = SlashCommand(client, sync_commands = True)
-g = Github('') # 
+g = Github('') # github access token
 repo = g.get_repo('') # github repo
 
 @client.event
 async def on_ready():
     cls()
     print(client.user)
+    print('\n')
 
- # thanks marci ^__^ ( Might redo/remake )
 @client.command()
 async def blacklist(ctx, username: str):
     contents = repo.get_contents('blacklist.txt')
     with open('blacklist.txt', 'a', encoding = 'UTF-8') as f:
         f.write(username + '\n')
     with open('blacklist.txt', 'r', encoding = 'UTF-8') as f:
-        fixed = f.read()[:-1]
+        fixed = f.read()
     with open('blacklist.txt', 'w', encoding = 'UTF-8') as f:
         f.write(fixed)
     with open('blacklist.txt', 'r') as file:
         datas = file.read()
-        log(datas)
+        log('blacklisted: ' + username)
     repo.update_file('blacklist.txt', 'blacklisted: ' + username, f'{datas}', contents.sha)
     await ctx.send('Blacklisted: ' + username)
-@slash.slash(name = 'blacklist', description = 'Blacklists user', guild_ids = [])
+@slash.slash(name = 'blacklist', description = 'Blacklists user', guild_ids = [965416632321192007])
 async def blacklist(ctx, username: str):
     contents = repo.get_contents('blacklist.txt')
     with open('blacklist.txt', 'a', encoding = 'UTF-8') as f:
         f.write(username + '\n')
     with open('blacklist.txt', 'r', encoding = 'UTF-8') as f:
-        fixed = f.read()[:-1]
+        fixed = f.read()
     with open('blacklist.txt', 'w', encoding = 'UTF-8') as f:
         f.write(fixed)
     with open('blacklist.txt', 'r') as file:
         datas = file.read()
-        log(datas)
+        log('blacklisted: ' + username)
     repo.update_file('blacklist.txt', 'blacklisted: ' + username, f'{datas}', contents.sha)
     await ctx.send('Blacklisted: ' + username)
 
@@ -66,26 +66,26 @@ async def whitelist(ctx, username: str):
     with open('whitelist.txt', 'a', encoding = 'UTF-8') as f:
         f.write(username + '\n')
     with open('whitelist.txt', 'r', encoding = 'UTF-8') as f:
-        fixed = f.read()[:-1]
+        fixed = f.read()
     with open('whitelist.txt', 'w', encoding = 'UTF-8') as f:
         f.write(fixed)
     with open('whitelist.txt', 'r') as file:
         datas = file.read()
-        log(datas)
+        log('whitelisted: ' + username)
     repo.update_file('whitelist.txt', 'whitelisted: ' + username, f'{datas}', contents.sha)
     await ctx.send('Whitelist: ' + username)
-@slash.slash(name = 'whitelist', description = 'whitelists user', guild_ids = [])
+@slash.slash(name = 'whitelist', description = 'whitelists user', guild_ids = [965416632321192007])
 async def whitelist(ctx, username: str):
     contents = repo.get_contents('whitelist.txt')
     with open('whitelist.txt', 'a', encoding = 'UTF-8') as f:
         f.write(username + '\n')
     with open('whitelist.txt', 'r', encoding = 'UTF-8') as f:
-        fixed = f.read()[:-1]
+        fixed = f.read()
     with open('whitelist.txt', 'w', encoding = 'UTF-8') as f:
         f.write(fixed)
     with open('whitelist.txt', 'r') as file:
         datas = file.read()
-        log(datas)
+        log('whitelisted: ' + username)
     repo.update_file('whitelist.txt', 'whitelisted: ' + username, f'{datas}', contents.sha)
     await ctx.send('Whitelist: ' + username)
 
