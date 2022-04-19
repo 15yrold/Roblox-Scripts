@@ -1,7 +1,7 @@
 local username = game.Players.LocalPlayer.Name
 local content = syn.request(
     {
-        Url = 'https://raw.githubusercontent.com/15yrold/Roblox-Database/main/whitelist.txt',  
+        Url = '', -- list of users link  
         Method = 'GET',
         Headers = {
             ['Content-Type'] = 'application/json'
