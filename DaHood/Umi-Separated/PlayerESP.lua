@@ -23,11 +23,10 @@ getgenv().EspPlayer = function(Player)
     Textlabel.Text = Player.Name..' ('..math.floor(Player.Character.Humanoid.Health)..')';
 end
 
-coroutine.resume(coroutine.create(function()
-    if Settings.Esp.Enabled == true then
-        for _, Player in pairs(Players:GetPlayers()) do
-            EspPlayer(Player)
-            print(Player)
-        end
-    end
-end))
+
+if Settings.Esp.Enabled == true then
+    for _, Player in pairs(Players:GetPlayers()) do
+        EspPlayer(Player)
+        print(Player)
+     end
+end
