@@ -1,5 +1,12 @@
---// { IMPORTANT } \\--
+--// { Heavenly Modded Lock Settings } \\--
+getgenv().Keybind = 'Q' --// { A, B, C } \\--
+getgenv().Prediction = 0.135 --// { 0.135, 0.175 } \\--
+getgenv().AimPart = 'LowerTorso' --// { Head, HumanoidRootPart, LowerTorso } \\--
+getgenv().Aimlocking = true --// { True, False } \\--
+getgenv().AimlockType = 'Mouse Click' ---// { Camera Trace, Mouse Click } \\-- ( Camera Trace Coming Soon )
+getgenv().Target = nil --// { Nil, UserName } \\--
 
+--// { IMPORTANT } \\--
 -- DONT TOUCH ANYTHING UNDER UNLESS YOU KNOW WHAT YOUR DOING
 
 local repo = 'https://raw.githubusercontent.com/15yrold/LinoriaLib/main/'
