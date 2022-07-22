@@ -1,3 +1,7 @@
+--// { IMPORTANT } \\--
+
+-- DONT TOUCH ANYTHING UNDER UNLESS YOU KNOW WHAT YOUR DOING
+
 local repo = 'https://raw.githubusercontent.com/15yrold/LinoriaLib/main/'
 local Library = loadstring(game:HttpGet(repo .. 'Library.lua'))()
 local ThemeManager = loadstring(game:HttpGet(repo .. 'addons/ThemeManager.lua'))()
@@ -40,30 +44,31 @@ end
 getgenv().TargetPart = function()
     for i = 0, 1, .1 do
         task.wait()
-        Part.CFrame = CFrame.new(Part.Position:Lerp(Players[Target].Character[DefaultPart].Position, i))
+        Part.CFrame = CFrame.new(Part.Position:Lerp(Players[getgenv().Target].Character[getgenv().AimPart].Position, i))
     end
 end
 
 Mouse.KeyDown:Connect(function(Key)
-    if Key ~= DefaultKeybind:lower() then
+    if Key ~= getgenv().Keybind:lower() then
         return
     end
-    if Enabled then
-        Enabled = false
+    if getgenv().Aimlocking then
+        getgenv().Aimlocking = false
     else
-        Enabled = true
+        getgenv().Aimlocking = true
         Plr = GetClosest()
-        Target = tostring(Plr)
+        getgenv().Target = tostring(Plr)
     end
 end)
 
 game.RunService.Heartbeat:Connect(function()
-    if Target ~= nil and Enabled == true then
+    if getgenv().Target ~= nil and getgenv().Aimlocking == true then
         TargetPart()
     else
         Part.CFrame = CFrame.new(0, -9999, 0)
     end
 end)
+
 
 local rawmetatable = getrawmetatable(game)
 local old = rawmetatable.__namecall
@@ -71,13 +76,12 @@ setreadonly(rawmetatable, false)
 rawmetatable.__namecall = newcclosure(function(...)
     local args = { ... }
     local method = getnamecallmethod()
-    if DefaultAimlockType == 'Mouse Click' and Target ~= nil and Enabled and method == 'FireServer' and args[2] == 'MousePos' then
-        args[3] = Players[Target].Character[DefaultPart].Position + (Players[Target].Character[DefaultPart].Velocity * DefaultPrediction)
+    if getgenv().AimlockType == 'Mouse Click' and getgenv().Target ~= nil and getgenv().Aimlocking and method == 'FireServer' and args[2] == 'MousePos' then
+        args[3] = Players[getgenv().Target].Character[getgenv().AimPart].Position + (Players[getgenv().Target].Character[getgenv().AimPart].Velocity * getgenv().Prediction)
         return old(unpack(args))
     end
     return old(...)
 end)
-
 
 local Window = Library:CreateWindow({
     Title = '<$',
@@ -96,30 +100,30 @@ Aimlock:AddToggle('Aimlock', {
     Tooltip = 'This Toggles Aimlock On & Off',
 })
 Toggles.Aimlock:OnChanged(function()
-    Enabled = Toggles.Aimlock.Value
-    --print('Aimlock: '..tostring(Settings.Aimlock.Enabled))
+    getgenv().Aimlocking = Toggles.Aimlock.Value
+    --print('Aimlock: '..tostring(Settings.Aimlock.getgenv().Aimlocking))
 end)
 Aimlock:AddDropdown('AimlockPart', {
-    Values = {'Head', 'HumanoidRootPart'},
-    Default = DefaultPart, 
+    Values = {'Head', 'HumanoidRootPart', 'LowerTorso'},
+    Default = getgenv().AimPart, 
     Multi = false, 
 
     Text = 'Aimlock Part',
     Tooltip = 'This Changes Aimlock Part', 
 })
 Options.AimlockPart:OnChanged(function()
-    DefaultPart = Options.AimlockPart.Value
+    getgenv().AimPart = Options.AimlockPart.Value
     --print('Rainbow Items Material: '..tostring(Settings.Items.Material))
 end)
 Aimlock:AddDropdown('AimlockType', {
     Values = {'Mouse Click', 'Camera Trace'},
-    Default = DefaultAimlockType, 
+    Default = getgenv().AimlockType, 
     Multi = false, 
 
     Text = 'Aimlock Part',
     Tooltip = 'This Changes Aimlock Part', 
 })
-Options.DefaultAimlockType:OnChanged(function()
-    DefaultAimlockType = Options.AimlockPart.Value
+Options.getgenv().AimlockType:OnChanged(function()
+    getgenv().AimlockType = Options.AimlockPart.Value
     --print('Rainbow Items Material: '..tostring(Settings.Items.Material))
 end)
