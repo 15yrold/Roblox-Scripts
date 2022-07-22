@@ -108,7 +108,6 @@ Aimlock:AddToggle('Aimlock', {
 })
 Toggles.Aimlock:OnChanged(function()
     getgenv().Aimlocking = Toggles.Aimlock.Value
-    --print('Aimlock: '..tostring(Settings.Aimlock.getgenv().Aimlocking))
 end)
 Aimlock:AddDropdown('AimlockPart', {
     Values = {'Head', 'HumanoidRootPart', 'LowerTorso'},
@@ -120,7 +119,6 @@ Aimlock:AddDropdown('AimlockPart', {
 })
 Options.AimlockPart:OnChanged(function()
     getgenv().AimPart = Options.AimlockPart.Value
-    --print('Rainbow Items Material: '..tostring(Settings.Items.Material))
 end)
 Aimlock:AddDropdown('AimlockType', {
     Values = {'Mouse Click', 'Camera Trace'},
@@ -132,5 +130,4 @@ Aimlock:AddDropdown('AimlockType', {
 })
 Options.getgenv().AimlockType:OnChanged(function()
     getgenv().AimlockType = Options.AimlockPart.Value
-    --print('Rainbow Items Material: '..tostring(Settings.Items.Material))
 end)
