@@ -1,7 +1,7 @@
 --// { Heavenly Modded Lock Settings } \\--
 getgenv().Keybind = 'Q' --// { A, B, C } \\--
 getgenv().Prediction = 0.135 --// { 0.135, 0.175 } \\--
-getgenv().AimPart = 'LowerTorso' --// { Head, HumanoidRootPart, LowerTorso } \\--
+getgenv().AimPart = 'HumanoidRootPart' --// { Head, HumanoidRootPart, LowerTorso } \\--
 getgenv().Aimlocking = true --// { True, False } \\--
 getgenv().AimlockType = 'Mouse Click' ---// { Camera Trace, Mouse Click } \\-- ( Camera Trace Coming Soon )
 getgenv().Target = nil --// { Nil, UserName } \\--
@@ -19,6 +19,7 @@ local Client = Players.LocalPlayer
 local Mouse = Client:GetMouse()
 local CurrentCamera = workspace.CurrentCamera
 local Part = Instance.new('Part', workspace)
+local Line = Drawing.new('Line')
 
 Part.Shape = Enum.PartType.Ball
 Part.Anchored = true
@@ -26,6 +27,17 @@ Part.CanCollide = false
 Part.Material = 'Neon'
 Part.Color = Color3.fromRGB(104, 0, 255)
 Part.Size = Vector3.new(1.5, 1.5, 1.5)
+
+Line.Color = Color3.fromRGB(104, 0, 255)
+Line.Thickness = 2
+Line.Transparency = 1
+
+game.RunService.RenderStepped:Connect(function()
+    local LineTo = CurrentCamera:WorldToViewportPoint(Players[getgenv().Target].Character.HumanoidRootPart.Position)
+    local LineFrom = CurrentCamera:WorldToViewportPoint(Client.Character.HumanoidRootPart.Position)
+    Line.To = Vector2.new(LineTo.X, LineTo.Y)
+    Line.From = Vector2.new(Mouse.X, Mouse.Y + 36)
+end)
 
 getgenv().GetClosest = function()
     local closest = {}
@@ -37,7 +49,7 @@ getgenv().GetClosest = function()
             local pos = os.Position
             if pos then
                 local point = CurrentCamera.WorldToViewportPoint(CurrentCamera, pos)
-                local dist = (Vector2.new(Mouse.X, Mouse.Y) - Vector2.new(point.X, point.Y)).Magnitude
+                local dist = (Vector2.new(Mouse.X, Mouse.Y + 36) - Vector2.new(point.X, point.Y)).Magnitude
                 if dist <= distance then
                     player = plr
                     distance = dist
@@ -61,10 +73,12 @@ Mouse.KeyDown:Connect(function(Key)
     end
     if getgenv().Aimlocking then
         getgenv().Aimlocking = false
+        Line.Visible = false
     else
         getgenv().Aimlocking = true
         Plr = GetClosest()
         getgenv().Target = tostring(Plr)
+        Line.Visible = true
     end
 end)
 
@@ -108,6 +122,7 @@ Aimlock:AddToggle('Aimlock', {
 })
 Toggles.Aimlock:OnChanged(function()
     getgenv().Aimlocking = Toggles.Aimlock.Value
+    --print('Aimlock: '..tostring(Settings.Aimlock.getgenv().Aimlocking))
 end)
 Aimlock:AddDropdown('AimlockPart', {
     Values = {'Head', 'HumanoidRootPart', 'LowerTorso'},
@@ -119,6 +134,7 @@ Aimlock:AddDropdown('AimlockPart', {
 })
 Options.AimlockPart:OnChanged(function()
     getgenv().AimPart = Options.AimlockPart.Value
+    --print('Rainbow Items Material: '..tostring(Settings.Items.Material))
 end)
 Aimlock:AddDropdown('AimlockType', {
     Values = {'Mouse Click', 'Camera Trace'},
@@ -130,4 +146,5 @@ Aimlock:AddDropdown('AimlockType', {
 })
 Options.getgenv().AimlockType:OnChanged(function()
     getgenv().AimlockType = Options.AimlockPart.Value
+    --print('Rainbow Items Material: '..tostring(Settings.Items.Material))
 end)
